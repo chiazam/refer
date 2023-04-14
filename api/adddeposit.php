@@ -24,9 +24,21 @@ if($resultgetreferid['num'] > 0){
 
     $amount = ((int)$_POST['amount']);
 
-    $mysplit = (($amount * SPLIT['my']) / 100);
+    $mysplit = (($amount * FIRSTSPLIT['my']) / 100);
 
-    $refersplit = (($amount * SPLIT['refer']) / 100);
+    $refersplit = (($amount * FIRSTSPLIT['refer']) / 100);
+    
+    $querygetfirstdeposit="SELECT * FROM deposit WHERE myid = '{$myid}' AND referid = '{$referid}' LIMIT 1";
+
+    $resultgetfirstdeposit = runquery($querygetfirstdeposit,true);
+    
+    if($resultgetfirstdeposit['num'] > 0){
+        
+        $mysplit = (($amount * SPLIT['my']) / 100);
+
+        $refersplit = (($amount * SPLIT['refer']) / 100);
+        
+    }
 
     $queryinsertdeposit="INSERT INTO deposit (myid, referid, mysplit, refersplit, amount) VALUES ('{$_POST['myid']}', '{$referid}', '{$mysplit}', '{$refersplit}', '{$amount}')";
 
