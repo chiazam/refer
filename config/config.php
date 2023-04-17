@@ -234,7 +234,7 @@ if($resultgetreferidamount['num'] > 0){
     
 }
 
-function withdrawamount(string $referid,int $amount){
+function withdrawreferamount(string $referid,int $amount){
     
     $readyamount = getreferidamount($referid);
 
