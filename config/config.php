@@ -8,9 +8,9 @@ define("PASSWORD", "");
 
 define("DATABASE", "refer");
 
-define("SPLIT",['my' => 95, "refer" => 5]);
-
 define("FIRSTSPLIT",['my' => 93, "refer" => 7 ]);
+
+define("SPLIT",['my' => 95, "refer" => 5 ]);
 
 define("BONUS", 0);
 
@@ -25,10 +25,10 @@ $conn = mysqli_connect(HOST, USERNAME, PASSWORD, DATABASE);
 
 if(!$conn) {
 
-    jsontell (["err"=>"Database connection failed", "tell"=>"Cross check database credentials..."]);
+    jsontell (["err"=>"Refer database connection failed", "tell"=>"Cross check refer database credentials..."]);
 }
 
-function runquery(string $query, bool $assoc = false){
+function runquery($query, bool $assoc = false){
 
     global $conn;
 
@@ -73,7 +73,7 @@ function fetchassoc(mysqli_result $result){
 
 }
 
-function adddeposit(string $myid, int $amount){
+function adddeposit($myid, $amount){
 
 $querygetreferid="SELECT referid FROM refer WHERE myid = '{$myid}'";
 
@@ -159,7 +159,7 @@ if($resultgetreferid['num'] > 0){
     
 }
 
-function addrefer(string $myid, string $referid){
+function addrefer($myid, $referid){
 
 $queryaddrefer="INSERT INTO refer (myid, referid) VALUES ('{$myid}', '{$referid}')";
 
@@ -216,7 +216,7 @@ if($resultaddrefer){
     
 }
 
-function getreferidamount(string $referid){
+function getreferidamount($referid){
     
 $querygetreferidamount="SELECT amount FROM total WHERE referid = '{$referid}'";
 
@@ -231,6 +231,26 @@ if($resultgetreferidamount['num'] > 0){
     return false;
 
 }
+    
+}
+
+function listdeposits($myid, $limit, $offset){
+
+$querylistdeposits="SELECT * FROM deposit WHERE myid = '{$myid}' LIMIT {$limit} OFFSET {$offset}";
+
+$resultlistdeposits = runquery($querylistdeposits,true);
+
+return $resultlistdeposits;
+    
+}
+
+function listreferidsplits($referid, $limit, $offset){
+    
+$queryreferidsplits="SELECT * amount FROM deposit WHERE referid = '{$referid}' LIMIT {$limit} OFFSET {$offset}";
+
+$resultreferidsplits = runquery($queryreferidsplits,true);
+
+return $resultreferidsplits;
     
 }
 
@@ -259,25 +279,5 @@ function withdrawreferamount(string $referid,int $amount){
 
     }
 
-}
-
-function listdeposits(string $myid, int $limit, int $offset){
-
-$querylistdeposits="SELECT * FROM deposit WHERE myid = '{$myid}' LIMIT {$limit} OFFSET {$offset}";
-
-$resultlistdeposits = runquery($querylistdeposits,true);
-
-return $resultlistdeposits;
-    
-}
-
-function listreferidsplits(string $referid, int $limit, int $offset){
-    
-$queryreferidsplits="SELECT * amount FROM deposit WHERE referid = '{$referid}' LIMIT {$limit} OFFSET {$offset}";
-
-$resultreferidsplits = runquery($queryreferidsplits,true);
-
-return $resultreferidsplits;
-    
-}
+} 
 
