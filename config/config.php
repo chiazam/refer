@@ -234,6 +234,33 @@ if($resultgetreferidamount['num'] > 0){
     
 }
 
+function withdrawamount(string $referid,int $amount){
+    
+    $readyamount = getreferidamount($referid);
+
+    if ($readyamount == false||$readyamount < $amount){
+
+        return false;
+
+    }
+
+    $newamount = ($readyamount - $amount);
+
+    $queryupdatereferamount="UPDATE total SET amount = '{$newamount}' WHERE referid = '{$referid}'";
+    
+    $resultupdatereferamount = runquery($queryupdatereferamount);
+
+    if(!$resultupdatereferamount){
+
+        return false;
+    }else{
+
+        return true;
+
+    }
+
+}
+
 function listdeposits(string $myid, int $limit, int $offset){
 
 $querylistdeposits="SELECT * FROM deposit WHERE myid = '{$myid}' LIMIT {$limit} OFFSET {$offset}";
